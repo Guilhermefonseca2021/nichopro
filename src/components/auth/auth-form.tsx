@@ -10,6 +10,7 @@ import {
   UserRound,
 } from "lucide-react";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { AuthInput } from "@/components/auth/auth-input";
 import { toAuthUser } from "@/lib/auth-user";
 import type { AuthUser } from "@/store/auth-store";
 
@@ -88,12 +89,6 @@ export function AuthForm({ supabase, onAuthenticated }: AuthFormProps) {
 
   return (
     <section className="w-full max-w-[430px]">
-      <div className="mb-9 lg:hidden">
-        <p className="text-sm font-extrabold tracking-tight text-[#261b35]">
-          Nicho<span className="text-[#762bd2]">Pro</span>
-        </p>
-      </div>
-
       <div className="mb-7">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#8a55d4]">
           {isSignup ? "Comece agora" : "Bem-vindo de volta"}
@@ -138,78 +133,47 @@ export function AuthForm({ supabase, onAuthenticated }: AuthFormProps) {
 
       <form className="space-y-4" onSubmit={handleSubmit}>
         {isSignup && (
-          <label className="block">
-            <span className="mb-1.5 block text-xs font-semibold text-[#4c4356]">
-              Nome completo
-            </span>
-            <span className="relative block">
-              <UserRound
-                size={17}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#a198aa]"
-              />
-              <input
-                autoComplete="name"
-                required
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-                placeholder="Como podemos te chamar?"
-                className="h-12 w-full rounded-xl border border-[#e7e2eb] bg-white pl-10 pr-4 text-sm outline-none transition placeholder:text-[#aaa2b2] focus:border-[#9c60e9] focus:ring-4 focus:ring-purple-100"
-              />
-            </span>
-          </label>
+          <AuthInput
+            label="Nome completo"
+            icon={UserRound}
+            autoComplete="name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            placeholder="Como podemos te chamar?"
+          />
         )}
 
-        <label className="block">
-          <span className="mb-1.5 block text-xs font-semibold text-[#4c4356]">
-            E-mail
-          </span>
-          <span className="relative block">
-            <Mail
-              size={17}
-              className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#a198aa]"
-            />
-            <input
-              autoComplete="email"
-              type="email"
-              required
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="voce@exemplo.com"
-              className="h-12 w-full rounded-xl border border-[#e7e2eb] bg-white pl-10 pr-4 text-sm outline-none transition placeholder:text-[#aaa2b2] focus:border-[#9c60e9] focus:ring-4 focus:ring-purple-100"
-            />
-          </span>
-        </label>
+        <AuthInput
+          label="E-mail"
+          icon={Mail}
+          autoComplete="email"
+          type="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          placeholder="voce@exemplo.com"
+        />
 
-        <label className="block">
-          <span className="mb-1.5 flex items-center justify-between text-xs font-semibold text-[#4c4356]">
-            <span>Senha</span>
-            {isSignup && <span className="font-normal text-[#9a91a2]">Mínimo de 8 caracteres</span>}
-          </span>
-          <span className="relative block">
-            <LockKeyhole
-              size={17}
-              className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#a198aa]"
-            />
-            <input
-              autoComplete={isSignup ? "new-password" : "current-password"}
-              type={passwordVisible ? "text" : "password"}
-              minLength={8}
-              required
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="••••••••"
-              className="h-12 w-full rounded-xl border border-[#e7e2eb] bg-white pl-10 pr-12 text-sm outline-none transition placeholder:text-[#aaa2b2] focus:border-[#9c60e9] focus:ring-4 focus:ring-purple-100"
-            />
+        <AuthInput
+          label="Senha"
+          icon={LockKeyhole}
+          autoComplete={isSignup ? "new-password" : "current-password"}
+          type={passwordVisible ? "text" : "password"}
+          minLength={isSignup ? 8 : undefined}
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          placeholder="••••••••"
+          hint={isSignup ? "Mínimo de 8 caracteres" : undefined}
+          rightSlot={
             <button
               type="button"
               aria-label={passwordVisible ? "Ocultar senha" : "Mostrar senha"}
               onClick={() => setPasswordVisible(!passwordVisible)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#93899d] hover:text-[#542990]"
+              className="rounded-md p-1 text-[#93899d] hover:text-[#542990]"
             >
               {passwordVisible ? <EyeOff size={17} /> : <Eye size={17} />}
             </button>
-          </span>
-        </label>
+          }
+        />
 
         {message && (
           <p
@@ -240,15 +204,8 @@ export function AuthForm({ supabase, onAuthenticated }: AuthFormProps) {
       </form>
 
       <p className="mt-6 text-center text-xs leading-5 text-[#9a91a2]">
-        Ao continuar, você concorda com nossos{" "}
-        <a href="#termos" className="font-semibold text-[#6e36a9] hover:underline">
-          Termos de uso
-        </a>{" "}
-        e{" "}
-        <a href="#privacidade" className="font-semibold text-[#6e36a9] hover:underline">
-          Política de privacidade
-        </a>
-        .
+        Seus dados de acesso são protegidos e usados somente para manter sua
+        conta.
       </p>
     </section>
   );

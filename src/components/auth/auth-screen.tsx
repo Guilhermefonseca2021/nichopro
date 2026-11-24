@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { BrandMark } from "@/components/auth/brand-mark";
 import { AccountPanel } from "@/components/auth/account-panel";
 import { AuthForm } from "@/components/auth/auth-form";
@@ -10,11 +11,18 @@ import { getSupabaseClient } from "@/lib/supabase/client";
 import { useAuthStore } from "@/store/auth-store";
 
 export function AuthScreen() {
+  const router = useRouter();
   const supabase = getSupabaseClient();
   const user = useAuthStore((state) => state.user);
   const setUser = useAuthStore((state) => state.setUser);
   const [isReady, setIsReady] = useState(!supabase);
   const [sessionError, setSessionError] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      router.replace("/dashboard");
+    }
+  }, [router, user]);
 
   useEffect(() => {
     if (!supabase) {

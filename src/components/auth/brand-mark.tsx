@@ -1,4 +1,5 @@
 import { Layers3 } from "lucide-react";
+import Link from "next/link";
 
 type BrandMarkProps = {
   light?: boolean;
@@ -6,7 +7,7 @@ type BrandMarkProps = {
 
 export function BrandMark({ light = false }: BrandMarkProps) {
   return (
-    <a
+    <Link
       href="/"
       aria-label="NichoPro, início"
       className={`inline-flex w-fit items-center gap-3 ${light ? "text-white" : "text-[#21182d]"}`}
@@ -22,6 +23,6 @@ export function BrandMark({ light = false }: BrandMarkProps) {
           Prompts · Serviços · Soluções
         </span>
       </span>
-    </a>
+    </Link>
   );
 }
